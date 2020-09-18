@@ -1,0 +1,124 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap-4.5.2-dist/css/bootstrap.min.css' %}">
+	<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.5.2-dist/js/bootstrap.min.js' %}" ></script>
+	<script src="{% static 'js/vue.js' %}" ></script>
+    <title>MK|index</title>
+  </head>
+  <body>
+	<!-- menu  -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+		<a class="navbar-brand" href="/">MK</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/mk/accounts">Profile</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Notes
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/mk/add">Write Notes</a>
+						<a class="dropdown-item" href="/mk/list">Show Note</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/mk/md_notes">Modify Notes</a>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0" action="" method="post">
+			{%  csrf_token  %}
+			  {{search.key_word}}
+			  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
+	<div class="container">
+		<form action="/mk/pub_talking">
+		{%  csrf_token  %}
+		  <div class="form-group">
+			<label for="id-content">{{talking.content.label}}</label>
+			{{talking.content}}{{talking.content.errors}}
+		  </div>
+			<div class="form-group">
+				<label for="id-pic">{{talking.pic.label}}</label>
+				{{talking.pic}}{{talking.pic.errors}}
+			</div>
+			{% if talking is not None %}
+			<input class="btn btn-secondary" type="submit" value="发布">
+			{% endif %}
+		</form>
+		<hr>
+		<!-- content  -->
+		<div class="row">
+			<div class="col-3">
+				<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				  <a class="nav-link active" id="talkingshow-tab" data-toggle="pill" href="#talkingshow" role="tab" aria-controls="v-pills-home" aria-selected="true">Talking</a>
+				  <a class="nav-link" id="note-show-tab" data-toggle="pill" href="#note-show" role="tab" aria-controls="note-show" aria-selected="false">Note</a>
+				  <a class="nav-link" id="msg-show-tab" data-toggle="pill" href="#msg-show" role="tab" aria-controls="msg-show" aria-selected="false">Messages</a>
+				  <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+				</div>
+			</div>
+			<div class="col-9 tab-content">
+			
+				<div id="talkingshow" class="tab-pane fade  show active">
+					{% for tk in data  %}
+					<div   class="card " role="tabpanel" aria-labelledby="talkingshow-tab" style="width: 50rem;">
+						<div class="card-body">
+							<h5 class="card-title">{{tk.uid.name}}</h5>
+							<h6 class="card-subtitle mb-2 text-muted">{{tk.create_time}}</h6>
+							<p class="card-text">{{tk.content}}</p>
+							<a href="#" class="card-link">Show</a>
+							<a href="#" class="card-link">Zan</a>
+						</div>
+					</div>
+					{% empty %}
+					<h3>DATA IS NOT FOUNF</h3>
+					{% endfor %}
+				
+				</div>
+				<div id="note-show" class="tab-pane fade"  role="tabpanel" aria-labelledby="note-show-tab">
+					
+				</div>
+				<div id="msg-show" class="tab-pane fade"  role="tabpanel" aria-labelledby="msg-show-tab">
+					{{msg}}
+				</div>
+				
+		</div>
+		
+		
+		
+		<hr>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+
+    
+  </body>
+</html>
